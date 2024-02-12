@@ -1,6 +1,6 @@
 # %%
 import numpy as np
-from typing import Any, Self
+from typing import Any
 
 
 # TODO: implement the PCA with numpy
