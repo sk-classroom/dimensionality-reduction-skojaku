@@ -16,6 +16,7 @@ class PrincipalComponentAnalysis:
         """
         self.n_components = n_components
         self.components = None
+        a = 1
         self.mean = None
 
     # TODO: implement the fit method
