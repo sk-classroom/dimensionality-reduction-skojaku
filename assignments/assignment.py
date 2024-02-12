@@ -20,7 +20,7 @@ class PrincipalComponentAnalysis:
         self.mean = None
 
     # TODO: implement the fit method
-    def fit(self, X: np.ndarray) -> Self:
+    def fit(self, X: np.ndarray):
         """
         Fit the model with X.
 
@@ -74,7 +74,7 @@ class LinearDiscriminantAnalysis:
         self.components = None
         self.mean = None
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> Self:
+    def fit(self, X: np.ndarray, y: np.ndarray):
         """
         Fit the model according to the given training data.
 

@@ -1,6 +1,4 @@
 #/bin/bash
-repoName=$1
-git remote rm template
-git remote add template https://github.com/sk-classroom/$repoName
-git fetch --all
-git merge template/main --allow-unrelated-histories
+git fetch upstream
+git checkout main
+git merge upstream/main
