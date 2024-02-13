@@ -34,7 +34,15 @@ class PrincipalComponentAnalysis:
         self : object
             Returns the instance itself.
         """
-        pass
+        self.mean = np.mean(X, axis=0)
+        X = X - self.mean
+        cov = np.cov(X.T)
+        eigenvalues, eigenvectors = np.linalg.eig(cov)
+        eigenvectors = eigenvectors.T
+        idxs = np.argsort(eigenvalues)[::-1]
+        eigenvalues = eigenvalues[idxs]
+        eigenvectors = eigenvectors[idxs]
+        self.components = eigenvectors[0 : self.n_components]
 
     def transform(self, X: np.ndarray) -> np.ndarray:
         """
@@ -53,7 +61,8 @@ class PrincipalComponentAnalysis:
         X_new : ndarray of shape (n_samples, n_components)
             Transformed values.
         """
-        pass
+        X = X - self.mean
+        return np.dot(X, self.components.T)
 
 
 # TODO: implement the LDA with numpy
@@ -91,7 +100,29 @@ class LinearDiscriminantAnalysis:
         5. Sort the eigenvectors by decreasing eigenvalues and choose k eigenvectors with the largest eigenvalues to form a d×k dimensional matrix W.
         6. Use this d×k eigenvector matrix to transform the samples onto the new subspace.
         """
-        pass
+        n = X.shape[1]
+        class_labels = np.unique(y)
+
+        mean_overall = np.mean(X, axis=0)
+        S_W = np.zeros((n, n))
+        S_B = np.zeros((n, n))
+
+        for c in class_labels:
+            X_c = X[y == c]
+            mean_c = np.mean(X_c, axis=0)
+            S_W += (X_c - mean_c).T.dot((X_c - mean_c))
+
+            n_c = X_c.shape[0]
+            mean_diff = (mean_c - mean_overall).reshape(n, 1)
+            S_B += n_c * (mean_diff).dot(mean_diff.T)
+
+        A = np.linalg.inv(S_W).dot(S_B)
+        eigenvalues, eigenvectors = np.linalg.eig(A)
+        eigenvectors = eigenvectors.T
+        idxs = np.argsort(abs(eigenvalues))[::-1]
+        eigenvalues = eigenvalues[idxs]
+        eigenvectors = eigenvectors[idxs]
+        self.components = eigenvectors[0 : self.n_components]
 
     def transform(self, X: np.ndarray) -> np.ndarray:
         """
@@ -110,7 +141,8 @@ class LinearDiscriminantAnalysis:
         X_new : ndarray of shape (n_samples, n_components)
             Transformed values.
         """
-        pass
+        X = X - self.mean
+        return np.dot(X, self.components.T)
 
 
 # TODO: Generating adversarial examples for PCA.
