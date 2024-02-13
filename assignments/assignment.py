@@ -145,4 +145,18 @@ class AdversarialExamples:
             Cluster IDs. y[i] is the cluster ID of the i-th sample.
 
         """
-        pass
+        mean = np.zeros(n_features)
+        n_pos = 900
+        n_neg = n_samples - n_pos
+
+        cov = np.diag([10, 1e-2, 1e-2])
+        xpos = np.random.multivariate_normal(mean=mean, cov=cov, size=n_pos)
+
+        mean = np.zeros(n_features)
+        mean[1] = 10
+        cov = np.diag([10, 1e-2, 1e-2])
+        xneg = np.random.multivariate_normal(mean=mean, cov=cov, size=n_neg)
+
+        X = np.concatenate([xpos, xneg], axis=0)
+        y = np.concatenate([np.zeros(n_pos), np.ones(n_neg)], axis=0)
+        return X, y
